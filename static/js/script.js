@@ -56,5 +56,10 @@ $(document).ready(function() {
 
     
 }); 
+
+
+setTimeout(function(){
+    $('message').fedOut('slow')
+}, 4000)
 // jquery end
 

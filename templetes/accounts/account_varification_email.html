@@ -1,0 +1,89 @@
+{% autoescape off %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo img {
+            max-width: 150px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 25px 0;
+            background: #007bff;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- <div class="logo">
+           
+            <img src="{% static 'images/logo1.png' %}" alt="Company Logo">
+        </div> -->
+        
+        <h1 style="color: #2c3e50; margin-bottom: 25px;">Welcome Aboard, {{ user.first_name }}! 🎉</h1>
+        
+        <p style="color: #444; font-size: 16px;">We're thrilled to have you join our community! Just one last step to complete your registration.</p>
+        
+        <p style="color: #444; font-size: 16px;">Please click the button below to verify your email address:</p>
+        
+        <center>
+            <a href="http://{{ domain }}{% url 'activate' uidb64=uid token=token %}" class="button">
+                Verify My Account
+            </a>
+        </center>
+
+        <p style="color: #888; font-size: 14px; margin-top: 20px;">
+            Can't click the button? Copy this link to your browser:<br>
+            http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+        </p>
+
+        <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid #eee;">
+            <p style="color: #666;">Need help? Contact our support team at 
+                <a href="mailto:trendhive.support@gmail.com" style="color: #007bff;">trendhive.support@gmail.com</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>This is an automated message - please do not reply directly</p>
+        <p style="color: #999; font-size: 0.8em; margin-top: 10px;">
+            © 2025 TrendHive. All rights reserved.<br>
+            123 Business Street, Kolkata, WB 700156
+        </p>
+    </div>
+</body>
+</html>
+
+{% endautoescape %}
