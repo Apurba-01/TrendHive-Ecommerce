@@ -150,4 +150,8 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+RAZORPAY_KEY_ID = 'rzp_test_iHhlPJZl6YNRca'
+RAZORPAY_KEY_SECRET = 'tn6sb4cLH7COcsKZSBTIV1s8'
+
+
 
