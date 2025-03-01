@@ -75,8 +75,8 @@
             <div class="order-details">
                 <h3 style="margin-top: 0; color: #2d3748;">Order Summary</h3>
                 <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y" }}</p>
-                <p><strong>Total Amount:</strong> ${{ order.grand_total }}</p>
-                <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+                <p><strong>Total Amount:</strong> ₹{{ order.order_total }}</p>
+                <p><strong>Payment Method:</strong> Razorpay </p>
             </div>
 
             <p style="color: #4a5568;">Your order is being processed and will be shipped soon. You'll receive another email when your items are on their way!</p>

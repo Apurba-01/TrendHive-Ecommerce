@@ -21,7 +21,7 @@ def initiate_payment(request, order_number):
 
     # Razorpay requires amount in paise (multiply by 100)
     payment_data = {
-        "amount": int(order.order_total * 100),  
+        "amount": int(round(order.order_total, 2) * 100),
         "currency": "INR",
         "receipt": str(order.order_number),
         "payment_capture": "1"
@@ -114,6 +114,7 @@ def payments(request):
                 "success": True,
                 "order_number": order.order_number,
                 "payment_id": payment.payment_id,
+                
             })
 
         except Exception as e:
@@ -138,8 +139,8 @@ def place_order(request, total=0, quantity=0,):
     for cart_item in cart_items:
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
-    tax = (18 * total)/100
-    grand_total = total + tax
+    tax = round((18 * total) / 100, 2)
+    grand_total = round(total + tax, 2)
 
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -188,6 +189,7 @@ def place_order(request, total=0, quantity=0,):
 
 def order_complete(request):
     order_number = request.GET.get('order_number')
+    transID = request.GET.get('payment_id')
     transID = request.GET.get('payment_id')
 
     if not order_number or not transID:
