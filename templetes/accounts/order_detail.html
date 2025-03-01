@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-content padding-y bg-light">
+    <div class="container" style="max-width: 1000px">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0">Order Invoice</h4>
+                        <small class="text-white-50">Order #{{order.order_number}}</small>
+                    </div>
+                    <!-- <img src="{% static '/images/logo1.png' %}" alt="Logo" style="max-height: 45px;"> -->
+                </div>
+            </div>
+
+            <div class="card-body">
+                <!-- Order Status and Details -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title text-muted mb-3">Bill To</h6>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="h5">{{order.full_name}}</li>
+                                    <li>{{order.full_address}}</li>
+                                    <li>{{order.city}}, {{order.state}}</li>
+                                    <li>{{order.pincode}}, {{order.country}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5">Order Date</dt>
+                                    <dd class="col-sm-7">{{order.created_at|date:"M d, Y H:i"}}</dd>
+
+                                    <dt class="col-sm-5">Transaction ID</dt>
+                                    <dd class="col-sm-7 text-truncate">{{order.payment.payment_id}}</dd>
+
+                                    <dt class="col-sm-5">Payment Status</dt>
+                                    <dd class="col-sm-7">
+                                        <span class="badge badge-pill badge-success">{{order.payment.status}}</span>
+                                    </dd>
+
+                                    <dt class="col-sm-5">Order Status</dt>
+                                    <dd class="col-sm-7">
+                                        <span class="badge badge-pill badge-primary">{{order.status}}</span>
+                                    </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 50%">Product</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-right">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in order_detail %}
+                            <tr>
+                                <td>
+                                    <div class="media">
+                                        <img src="{{ item.product.image.url }}" class="mr-3" width="64" alt="Product">
+                                        <div class="media-body">
+                                            <h6 class="mb-1">{{item.product.product_name}}</h6>
+                                            {% if item.variations.all %}
+                                            <div class="text-muted small">
+                                                {% for i in item.variations.all %}
+                                                <div>{{ i.variation_category|capfirst }}: {{ i.variation_value|capfirst }}</div>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center">{{item.quantity}}</td>
+                                <td class="align-middle text-right">₹{{item.product_price}} </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Order Totals -->
+                <div class="row mt-4">
+                    <div class="col-lg-5 ml-auto">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <dl class="row mb-0">
+                                    <dt class="col-6">Subtotal:</dt>
+                                    <dd class="col-6 text-right">₹{{subtotal}} </dd>
+
+                                    <dt class="col-6">Tax:</dt>
+                                    <dd class="col-6 text-right">₹{{order.tax}} </dd>
+
+                                    <dt class="col-6">Shipping:</dt>
+                                    <dd class="col-6 text-right text-success">FREE</dd>
+
+                                    <dt class="col-6 h4 mb-0">Total:</dt>
+                                    <dd class="col-6 text-right h4 mb-0 text-primary">₹{{order.order_total}} </dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Timeline -->
+                <div class="mt-5 pt-4 border-top">
+                    <h6 class="text-muted mb-4">Order Progress</h6>
+                    <div class="timeline-steps">
+                        <div class="timeline-step {% if order.status == 'New' %}active{% endif %}">
+                            <div class="timeline-content">
+                                <span class="circle">1</span>
+                                <p class="h6">Order Placed</p>
+                                <small class="text-muted">{{order.created_at|date:"M d, Y"}}</small>
+                            </div>
+                        </div>
+                        <div class="timeline-step {% if order.status == 'Accepted' %}active{% endif %}">
+                            <div class="timeline-content">
+                                <span class="circle">2</span>
+                                <p class="h6">Order Confirmed</p>
+                            </div>
+                        </div>
+                        <div class="timeline-step {% if order.status == 'Completed' %}active{% endif %}">
+                            <div class="timeline-content">
+                                <span class="circle">3</span>
+                                <p class="h6">Order Delivered</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light">
+                <div class="text-center text-muted small">
+                    <p class="mb-1">Thank you for choosing us! We appreciate your business.</p>
+                    <p class="mb-0">Need help? Contact support@example.com or call +1 (555) 123-4567</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .timeline-steps {
+        display: flex;
+        justify-content: space-between;
+        padding: 2rem 0;
+    }
+
+    .timeline-step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+
+    .timeline-step.active .circle {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+
+    .circle {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 2px solid #dee2e6;
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .card-header {
+        border-radius: 0.375rem 0.375rem 0 0;
+    }
+</style>
+
+{% endblock %}
