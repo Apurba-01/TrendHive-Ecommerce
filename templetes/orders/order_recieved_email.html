@@ -1,0 +1,102 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: #f8f9fa;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 1px solid #eeeeee;
+        }
+       
+        .content {
+            padding: 40px 30px;
+        }
+        .order-number {
+            color: #2d3748;
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+        .order-details {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+        .thank-you {
+            font-size: 24px;
+            color: #2d3748;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #2563eb;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            
+            <h1 class="thank-you">Thank You, {{ user.first_name }}!</h1>
+            <p class="order-number">Order Number: <strong>{{ order.order_number }}</strong></p>
+        </div>
+
+        <div class="content">
+            <div class="order-details">
+                <h3 style="margin-top: 0; color: #2d3748;">Order Summary</h3>
+                <p><strong>Order Date:</strong> {{ order.created_at|date:"F j, Y" }}</p>
+                <p><strong>Total Amount:</strong> ${{ order.grand_total }}</p>
+                <p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+            </div>
+
+            <p style="color: #4a5568;">Your order is being processed and will be shipped soon. You'll receive another email when your items are on their way!</p>
+
+            <center>
+                <a href="" class="button">
+                    Track Your Order
+                </a>
+            </center>
+        </div>
+
+        <div class="footer">
+            <p>Need help? Contact our support team at 
+                <a href="mailto:trendhive.support@gmail.com" style="color: #2563eb; text-decoration: none;">
+                    trendhive.support@gmail.com
+                </a>
+            </p>
+            <p style="margin: 15px 0 0 0;">© 2025 TrendHive. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+{% endautoescape %}

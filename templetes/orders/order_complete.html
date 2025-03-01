@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container" style="margin-top: 50px;">
+    <center>
+        <i class="fas fa-check-circle" style="font-size: 72px; margin-bottom: 20px; color: #28A745; animation: bounce 1s;"></i>
+        <h2 class="text-center mb-4" style="font-weight: 600; color: #2c3e50;">Payment Successful!</h2>
+        <p class="text-muted">Your order has been processed successfully</p>
+        <a href="{% url 'store' %}" class="btn btn-success btn-lg" style="padding: 12px 30px; border-radius: 25px;">
+            <i class="fas fa-shopping-bag mr-2"></i>Continue Shopping
+        </a>
+    </center>
+</div>
+
+<div class="container" style="margin: 2rem auto; width: 85%; padding: 40px; background: white; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+    <div class="row invoice row-printable">
+        <div class="col-md-12">
+            <div class="panel panel-default plain" id="dash_0">
+                <div class="panel-body p30">
+                    <!-- Invoice Header -->
+                    <div class="row mb-4" style="border-bottom: 2px solid #f1f1f1; padding-bottom: 20px;">
+                        <div class="col-lg-6">
+                            <div class="invoice-logo">
+                                <img src="{% static 'images/logo1.png' %}" alt="Company Logo" style="max-height: 50px;">
+                                <p class="mt-2" style="color: #7f8c8d; font-size: 0.9rem;">
+                                    Invoice Date: {{order.created_at|date:"M d, Y"}}<br>
+                                    Order ID: #{{order_number}}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="invoice-from" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <h5 style="color: #2c3e50; font-weight: 600; margin-bottom: 15px;">Shipping Details</h5>
+                                <ul class="list-unstyled mb-0" style="line-height: 1.8;">
+                                    <li><strong>{{order.full_name}}</strong></li>
+                                    <li>{{order.full_address}}</li>
+                                    <li>{{order.city}}, {{order.state}}</li>
+                                    <li>{{{order.pincode}},{order.country}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary -->
+                    <div class="order-summary mb-4" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Transaction ID:</strong></p>
+                                <p class="text-muted">{{transID}}</p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Payment Status:</strong></p>
+                                <span class="badge badge-success" style="font-size: 0.9rem; padding: 8px 12px;">
+                                    {{payment.status}}
+                                </span>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="mb-1"><strong>Total Amount:</strong></p>
+                                <h4 style="color: #27ae60; font-weight: 700;">₹{{order.order_total}} INR</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div class="invoice-items">
+                        <div class="table-responsive">
+                            <table class="table table-hover" style="border: 1px solid #f1f1f1;">
+                                <thead style="background: #2c3e50; color: white;">
+                                    <tr>
+                                        <th class="text-left" style="padding: 15px; border: none;">Product</th>
+                                        <th class="text-center" style="padding: 15px; border: none;">Qty</th>
+                                        <th class="text-right" style="padding: 15px; border: none;">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in ordered_products %}
+                                    <tr style="border-bottom: 1px solid #f1f1f1;">
+                                        <td style="padding: 15px;">
+                                            <div class="product-info">
+                                                <h6 style="font-weight: 600; margin-bottom: 5px;">{{item.product.product_name}}</h6>
+                                                {% if item.variations.all %}
+                                                <div class="text-muted" style="font-size: 0.9rem;">
+                                                    {% for i in item.variations.all %}
+                                                    <span class="mr-2">{{ i.variation_category }}: {{ i.variation_value }}</span>
+                                                    {% endfor %}
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                        <td class="text-center" style="padding: 15px;">{{item.quantity}}</td>
+                                        <td class="text-right" style="padding: 15px; font-weight: 500;">₹{{item.product_price}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Totals -->
+                    <div class="row mt-4">
+                        <div class="col-lg-4 offset-lg-8">
+                            <div class="totals" style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Subtotal:</span>
+                                    <span>₹{{subtotal}}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Tax:</span>
+                                    <span>₹{{order.tax}}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" style="font-weight: 600;">
+                                    <span>Grand Total:</span>
+                                    <span>₹{{order.order_total}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="invoice-footer mt-5 text-center" style="border-top: 1px solid #f1f1f1; padding-top: 20px;">
+                        <p class="text-muted mb-1">Thank you for choosing us!</p>
+                        <p class="text-muted">Need assistance? <a href="mailto:support@example.com" style="color: #2980b9;">Contact Support</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+        40% {transform: translateY(-20px);}
+        60% {transform: translateY(-10px);}
+    }
+    
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+        transition: background-color 0.3s ease;
+    }
+</style>
+
+{% endblock %}

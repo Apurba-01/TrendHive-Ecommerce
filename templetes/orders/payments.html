@@ -132,68 +132,65 @@
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
+
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
-    var grandTotal = parseFloat("{{ grand_total|default:0 }}") * 100;  // Convert INR to paise
     var options = {
-        "key": "rzp_test_iHhlPJZl6YNRca",  // Get Razorpay Key from Django settings
-        "amount": grandTotal,  // Order amount in paise
+        "key": "rzp_test_iHhlPJZl6YNRca",  // Razorpay API Key
+        "amount": parseInt("{{ grand_total }}") * 100,  // Convert INR to paise
         "currency": "INR",
         "name": "TrendHive",
         "description": "Order Payment",
-        "image": "{% static 'images/logo1.png' %}",  // Logo path from Django static files
-        "order_id": "{{ razorpay_order_id }}",  // Razorpay Order ID generated in Django
+        "order_id": "{{ razorpay_order_id }}",  // Ensure this is a valid Razorpay order_id
         "handler": function (response) {
-            fetch("{% url 'payments' %}", {  // Django view to verify payment
+            fetch("{% url 'payments' %}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-CSRFToken": "{{ csrf_token }}"  // Include CSRF token
+                    "X-CSRFToken": "{{ csrf_token }}"
                 },
                 body: JSON.stringify({
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_signature: response.razorpay_signature
+                    "orderID": "{{ order.order_number }}",
+                    "razorpay_payment_id": response.razorpay_payment_id,
+                    
+                    
                 })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert("Payment successful!");
-                    window.location.href = "/orders/payment_success/?order_number=" + data.order_number + "&payment_id=" + data.payment_id;
+                    window.location.href = "{% url 'order_complete' %}?order_number=" + data.order_number + "&payment_id=" + data.payment_id;
                 } else {
-                    alert("Payment verification failed. Please contact support.");
+                    alert("Payment failed: " + data.error);
                 }
             })
             .catch(error => console.error("Error:", error));
         },
         "prefill": {
-            "name": "{{ request.user.get_full_name }}",
-            "email": "{{ request.user.email }}",
-            "contact": "{{ request.user.profile.phone_number }}"
+            "name": "{{ order.full_name }}",
+            "email": "{{ order.email }}",
+            "contact": "{{ order.phone }}"
         },
         "notes": {
             "address": "{{ order.full_address }} {{ order.city }}, {{ order.state }} - {{ order.pincode }}"
         },
-        "theme": {
-            "color": "#3399cc"
-        }
+        "theme": { "color": "#3399cc" }
     };
-
-    var rzp1 = new Razorpay(options);
     
+    var rzp1 = new Razorpay(options);
     document.getElementById('rzp-button1').onclick = function (e) {
         rzp1.open();
         e.preventDefault();
     };
-
+    
     rzp1.on('payment.failed', function (response) {
+        console.log("Payment Failed:", response);  // Debugging log
         alert("Payment failed: " + response.error.description);
     });
-</script>
-
-<button id="rzp-button1" class="btn btn-primary">Pay Now</button>
-
+    </script>
+    
 
 
 
