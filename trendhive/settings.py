@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -24,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@t7d^r%xr$ucoqmpo%g*7_8hguf7pv#5)zmj1lh_qbt@zly7*='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool) # True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="127.0.0.1", cast=lambda v: v.split(","))
 
 
 # Application definition
@@ -140,11 +141,11 @@ MESSAGE_TAGS = {
 
 # SMTP configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'trendhive.noreply'
-EMAIL_HOST_PASSWORD = 'cpklkrsqgcoeietm'
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 
 # Default primary key field type
@@ -152,8 +153,8 @@ EMAIL_USE_TLS = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RAZORPAY_KEY_ID = 'rzp_test_iHhlPJZl6YNRca'
-RAZORPAY_KEY_SECRET = 'tn6sb4cLH7COcsKZSBTIV1s8'
+RAZORPAY_KEY_ID = config("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = config("RAZORPAY_KEY_SECRET")
 
 
 

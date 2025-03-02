@@ -3,132 +3,180 @@
 
 {% block content %}
 
-{% load static %}
+<section class="section-content padding-y bg-light">
+    <div class="container" style="max-width: 1200px;">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="h3 mb-3" style="font-weight: 400; color: #2d3748;">Checkout Summary</h2>
+                <p class="text-muted">Order #{{order.order_number}}</p>
+            </div>
+        </div>
 
-
-<section class="section-content padding-y bg">
-    <div class="container">
-
-        <!-- ============================ COMPONENT 1 ================================= -->
-        <h4 class="text-center mb-20">Review Your Order and Make Payment</h4>
         <div class="row">
-
-            <aside class="col-lg-8">
-                <div class="card">
-                    <h5 class="card-header">Billing Address</h5>
+            <!-- Left Column -->
+            <div class="col-lg-8">
+                <!-- Billing Address -->
+                <div class="card mb-4 border-0 shadow-sm">
                     <div class="card-body">
-                        <p class="card-text mb-0">{{order.full_name}}</p>
-                        <p class="card-text mb-0">{{order.full_address}}</p>
-                        <p class="card-text mb-0">{{order.city}}, {{order.state}}</p>
-                        <p class="card-text mb-0">{{order.pincode}}</p>
-                        <p class="card-text mb-0">{{order.email}}</p>
-                        <p class="card-text mb-0">{{order.phone}}</p>
-                        {% if order.order_note %}
-                        <b>Order Note: </b> {{order.order_note}}
-                        {% endif %}
-
-
+                        <h5 class="mb-4 text-dark" style="font-weight: 500;">
+                            <i class="fas fa-user-circle text-muted mr-2"></i>
+                            Billing Details
+                        </h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1 text-dark">Contact Information</p>
+                                <p class="text-muted small">{{order.email}}<br>{{order.phone}}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="mb-1 text-dark">Shipping Address</p>
+                                <p class="text-muted small">
+                                    {{order.full_name}}<br>
+                                    {{order.full_address}}<br>
+                                    {{order.city}}, {{order.state}} - {{order.pincode}}
+                                    {% if order.order_note %}
+                                    <br><span class="text-dark">Note:</span> {{order.order_note}}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="card">
-                    <h5 class="card-header">Payment Method</h5>
+
+                <!-- Order Items -->
+                <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <p class="card-text">Razorpay</p>
-
-                    </div>
-                </div>
-                <div class="card">
-                    <h5 class="card-header">Review Products</h5>
-                    <div class="card-body">
-                        <table class="table table-borderless table-shopping-cart">
-                            <thead class="text-muted">
-                                <tr class="small text-uppercase">
-                                    <th scope="col">Product</th>
-                                    <th scope="col" width="120">Quantity</th>
-                                    <th scope="col" width="120">Price</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                {% for cart_item in cart_items %}
-                                <tr>
-                                    <td>
-                                        <figure class="itemside align-items-center">
-                                            <div class="aside"><img src="{{ cart_item.product.image.url }}"
-                                                    class="img-sm"></div>
-                                            <figcaption class="info">
-                                                <a href="{{ cart_item.product.get_url }}" class="title text-dark">{{ cart_item.product.product_name }}</a>
-                                                <p class="text-muted small">
+                        <h5 class="mb-4 text-dark" style="font-weight: 500;">
+                            <i class="fas fa-box-open text-muted mr-2"></i>
+                            Order Items
+                        </h5>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr class="small text-muted">
+                                        <th>Product</th>
+                                        <th class="text-center">Qty</th>
+                                        <th class="text-right">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cart_item in cart_items %}
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                <img src="{{ cart_item.product.image.url }}" 
+                                                     class="mr-3" 
+                                                     width="60" 
+                                                     alt="{{ cart_item.product.product_name }}">
+                                                <div class="media-body">
+                                                    <p class="mb-1 text-dark">{{ cart_item.product.product_name }}</p>
                                                     {% if cart_item.variations.all %}
-                                                    {% for item in cart_item.variations.all %}
-                                                    {{ item.variation_category | capfirst }} : {{ item.variation_value | capfirst }} <br>
-                                                    {% endfor %}
+                                                    <div class="text-muted small">
+                                                        {% for item in cart_item.variations.all %}
+                                                        {{ item.variation_category|capfirst }}: 
+                                                        {{ item.variation_value|capfirst }}<br>
+                                                        {% endfor %}
+                                                    </div>
                                                     {% endif %}
-                                                </p>
-                                            </figcaption>
-                                        </figure>
-                                    </td>
-                                    <td class="text-center">
-                                        <!-- col.// -->
-                                        <label for="">{{cart_item.quantity}}</label>
-                                    </td>
-                                    <td>
-                                        <div class="price-wrap">
-                                            <var class="price">₹ {{ cart_item.sub_total }}</var>
-                                            <small class="text-muted"> ₹ {{ cart_item.product.price }} each </small>
-                                        </div> <!-- price-wrap .// -->
-                                    </td>
-
-                                </tr>
-                                {% endfor %}
-
-                            </tbody>
-                        </table>
-
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle text-center">{{cart_item.quantity}}</td>
+                                        <td class="align-middle text-right">
+                                            <span class="text-dark">₹{{ cart_item.sub_total }}</span><br>
+                                            <small class="text-muted">₹{{ cart_item.product.price }} each</small>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-            </aside> <!-- col.// -->
-            <aside class="col-lg-4">
-
-                <div class="card">
+            <!-- Right Column -->
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="card border-0 shadow-sm">
                     <div class="card-body">
-                        <dl class="dlist-align">
-                            <dt>Total price:</dt>
-                            <dd class="text-right">₹ {{total}}</dd>
+                        <h5 class="mb-4 text-dark" style="font-weight: 500;">
+                            <i class="fas fa-credit-card text-muted mr-2"></i>
+                            Payment Summary
+                        </h5>
+                        
+                        <dl class="row mb-3">
+                            <dt class="col-6">Subtotal</dt>
+                            <dd class="col-6 text-right">₹{{total}}</dd>
+                            
+                            <dt class="col-6">Tax</dt>
+                            <dd class="col-6 text-right">₹{{tax}}</dd>
+                            
+                            <dt class="col-6">Shipping</dt>
+                            <dd class="col-6 text-right text-success">FREE</dd>
                         </dl>
-                        <dl class="dlist-align">
-                            <dt>Tax:</dt>
-                            <dd class="text-right"> ₹ {{tax}}</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Grand Total:</dt>
-                            <dd class="text-right text-dark b"><strong>₹ {{grand_total}}</strong></dd>
-                        </dl>
+                        
                         <hr>
-                        <p class="text-center mb-3">
-                            <img src="{% static './images/misc/payments.png' %}" height="26">
-                        </p>
+                        
+                        <dl class="row mb-4">
+                            <dt class="col-6 h5">Total</dt>
+                            <dd class="col-6 text-right h5 text-dark">₹{{grand_total}}</dd>
+                        </dl>
 
-
-
-                        <!-- Razorpay Button Will Load -->
-                        <button id="rzp-button1" class="btn btn-primary btn-block"> Make Payment </button>
-
-
-                    </div> <!-- card-body.// -->
-                </div> <!-- card.// -->
-
-            </aside> <!-- col.// -->
-
-
-        </div> <!-- row.// -->
-
-        <!-- ============================ COMPONENT 1 END .// ================================= -->
-
-    </div> <!-- container .//  -->
+                        <div class="border-top pt-3">
+                            <button id="rzp-button1" 
+                                    class="btn btn-dark btn-block py-3"
+                                    style="background: #2d3748;">
+                                Complete Payment
+                            </button>
+                            
+                            <div class="text-center mt-3">
+                                <img src="{% static './images/misc/payments.png' %}" 
+                                     class="img-fluid" 
+                                     style="max-height: 30px;">
+                                <p class="text-muted small mt-2">
+                                    100% Secure Payments • SSL Encrypted
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
+<style>
+    .card {
+        border-radius: 8px;
+        background: #ffffff;
+    }
+    
+    .table thead th {
+        border-bottom: 1px solid #e2e8f0;
+        border-top: none;
+        font-weight: 500;
+    }
+    
+    .table td, .table th {
+        vertical-align: middle;
+        border-color: #f8f9fa;
+    }
+    
+    .btn-dark {
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+    }
+    
+    .btn-dark:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .text-muted {
+        color: #718096 !important;
+    }
+</style>
+
+
 <!-- ========================= SECTION CONTENT END// ========================= -->
 
 
