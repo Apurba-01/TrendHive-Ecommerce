@@ -1,33 +1,91 @@
 <!-- ========================= FOOTER ========================= -->
+
+<style>
+    /* Ensure footer sticks to the bottom */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.section-footer {
+    margin-top: auto; /* Pushes footer to bottom */
+    padding: 15px 0;
+    background: #f8f9fa;
+}
+
+/* Payment icons */
+.section-footer i {
+    margin: 0 5px;
+    color: #555;
+}
+
+/* Razorpay logo */
+.payment-logo {
+    height: 24px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-bottom {
+        text-align: center;
+    }
+}
+
+</style>
+
 <footer class="section-footer border-top">
-	<div class="container">
-		<section class="footer-bottom border-top row">
-			<div class="col-md-2">
-				<p class="text-muted"> &copy 2019 Company name </p>
-			</div>
-			<div class="col-md-8 text-md-center">
-				<span  class="px-2">info@pixsellz.io</span>
-				<span  class="px-2">+879-332-9375</span>
-				<span  class="px-2">Street name 123, Avanue abc</span>
-			</div>
-			<div class="col-md-2 text-md-right text-muted">
-				<i class="fab fa-lg fa-cc-visa"></i>
-				<i class="fab fa-lg fa-cc-paypal"></i>
-				<i class="fab fa-lg fa-cc-mastercard"></i>
-			</div>
-		</section>
-	</div><!-- //container -->
+    <div class="container">
+        <section class="footer-bottom border-top row">
+            <div class="col-md-4 text-center text-md-left">
+                <p class="text-muted"> &copy; 2025 TrendHive</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <span class="px-2">info@ApurbaMaji</span>
+                <span class="px-2">123 Business Street, Kolkata</span>
+            </div>
+            <div class="col-md-4 text-center text-md-right">
+                <i class="fab fa-lg fa-cc-visa"></i>
+                <i class="fas fa-credit-card fa-lg"></i>
+                <i class="fab fa-lg fa-cc-mastercard"></i>
+                
+            </div>
+        </section>
+    </div><!-- //container -->
 </footer>
+
 <!-- ========================= FOOTER END // ========================= -->
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	$(document).ready(function(){
-		$('.thumb a').click(function(e){
-			e.preventDefault();
-			$('.mainImage img').attr('src', $(this).attr("href"));
-		})
-	})
+$(document).ready(function(){
+    // Handle thumbnail click
+    $('.thumbnail-item img').click(function(e){
+        e.preventDefault();
+        
+        // Get the full-size image URL from data attribute
+        const newSrc = $(this).data('full');
+        
+        // Update main image
+        $('#mainProductImage').attr('src', newSrc);
+        
+        // Update active class
+        $('.thumbnail-item').removeClass('active');
+        $(this).parent().addClass('active');
+    });
+    
+    // Optional: Add smooth transition effect
+    $('#mainProductImage').css('transition', 'opacity 0.3s ease');
+    $('.thumbnail-item img').on('mouseenter', function() {
+        $(this).css('transform', 'scale(1.05)');
+    }).on('mouseleave', function() {
+        $(this).css('transform', 'scale(1)');
+    });
+});
 </script>
 
 </body>
