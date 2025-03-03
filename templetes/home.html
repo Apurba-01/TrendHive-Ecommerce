@@ -29,7 +29,7 @@
 
 
 		<div class="row">
-			{% for product in products %}
+			{% for product in products|slice:":12" %}
 			<div class="col-md-3">
 				<div class="card card-product-grid">
 					<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.image.url }}"> </a>

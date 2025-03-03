@@ -9,7 +9,7 @@ from django.db.models import Avg, Count
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(max_length=200, unique=True)
-    description = models.CharField(max_length=300, blank=True,null=True)
+    description = models.CharField(max_length=700, blank=True,null=True)
     price = models.IntegerField()
     image = models.ImageField(upload_to='photos/products')
     stock = models.IntegerField()

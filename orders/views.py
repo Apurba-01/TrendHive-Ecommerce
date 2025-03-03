@@ -139,7 +139,7 @@ def place_order(request, total=0, quantity=0,):
     for cart_item in cart_items:
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
-    tax = round((18 * total) / 100, 2)
+    tax = round((8 * total) / 100, 2)
     grand_total = round(total + tax, 2)
 
     if request.method == 'POST':

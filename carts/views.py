@@ -174,7 +174,7 @@ def cart(request , total=0, quantity=0, cart_items=None):
         for cart_item in cart_items:
             total +=(cart_item.product.price*cart_item.quantity)
             quantity+= cart_item.quantity
-        tax = round((total * 0.18), 2)  # Assuming 18% tax, adjust as needed
+        tax = round((total * 0.08), 2)  # Assuming 18% tax, adjust as needed
         grand_total = round(total + tax, 2)
     except Exception:
         pass
