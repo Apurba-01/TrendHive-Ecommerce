@@ -143,7 +143,7 @@ import os
 STATIC_URL = '/static/'
 
 # This should be outside of your project directory
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Use absolute paths instead of relative
 STATICFILES_DIRS = [

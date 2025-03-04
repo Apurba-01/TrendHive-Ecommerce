@@ -1,0 +1,112 @@
+/* Hide Radio button */
+.rate>input {
+    display: none;
+}
+
+.rate {
+    display: inline-block;
+    ;
+    border: 0;
+}
+
+.rate>label {
+    float: right;
+}
+
+/* Showing the stars */
+.rate>label:before {
+    display: inline-block;
+    font-size: 1.1rem;
+    font-family: FontAwesome;
+    content: "\f005";
+    margin: 0;
+    padding: 0.3rem .2rem;
+    cursor: pointer;
+}
+
+/* Half star */
+.rate .half:before {
+    content: "\f089";
+    position: absolute;
+    padding-right: 0;
+}
+
+/* Click and hover */
+input:checked~label,
+label:hover~label {
+    color: #ffb503;
+}
+
+/* hover hightlight */
+input:checked+label:hover,
+input:checked~label:hover,
+input:checked~label:hover~label,
+label:hover~input:checked~label {
+    color: #cc9000;
+}
+
+.rating-star i {
+    color: #ffb503 !important;
+}
+
+.img-main-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Maximum size */
+    margin: 0 auto;
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1/1; /* Square ratio - change to 4/3 for rectangular */
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    padding: 15px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .img-main-wrap {
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 576px) {
+    .img-main-wrap {
+        max-width: 100%;
+        aspect-ratio: 3/4; /* Taller ratio for mobile */
+    }
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Fill container, cropping if needed */
+}
+  
+  .thumbnail-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .thumbnail-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid transparent;
+  }
+  
+  .thumbnail-item:hover img,
+  .thumbnail-item.active img {
+    border-color: #3498db;
+  }
+
